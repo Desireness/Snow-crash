@@ -1,0 +1,95 @@
+
+
+Probably necessary to install->libpam-umask
+
+pista acerca de comandos sugerentes:
+
+		->getfacl - get file access control lists
+			-> getafcl de los tres archivos tienen lo mismo
+
+		-> comando find: filtrado por user level00:
+
+			->¿incidencias?. Reporte negativo, mismo resultado que getfacl
+
+
+		->variables de entorno con printenv:
+
+			-> posible pista:
+
+			
+
+				OLDPWD=/home/user
+				_=/usr/bin/printenv
+
+		->ps aux: para mirar los procesos:
+
+			-> ¿incidencias?. ¡BINGO!, primera....¿pista?:
+
+					ps aux | grep level 00:
+
+			
+		root      1936  0.0  0.6  11360  3384 ?        Ss   15:02   0:00 sshd: level00 [priv]
+		level00   1940  0.0  0.3  11360  1600 ?        R    15:02   0:00 sshd: level00@pts/0 
+		level00   1941  0.0  1.1   9592  6028 pts/0    Ss   15:02   0:00 -bash
+		root      2042  0.0  0.6  11360  3384 ?        Ss   15:03   0:00 sshd: level00 [priv]
+		level00   2046  0.0  0.3  11360  1600 ?        S    15:03   0:00 sshd: level00@pts/1 
+		level00   2047  0.0  1.1   9612  6060 pts/1    Ss+  15:03   0:00 -bash
+		level00   2919  0.0  0.2   4936  1148 pts/0    R+   16:15   0:00 ps aux
+		level00   2920  0.0  0.1   4380   816 pts/0    S+   16:15   0:00 grep --color=auto level00
+
+
+		-> en var/mail esta la flag del 05:
+
+		
+
+		cat level05 
+		*/2 * * * * su -c "sh /usr/sbin/openarenaserver" - flag05
+
+
+		--> finalmente encontrado el usuario john con el simple comand find:
+
+		->find / -user flag00 2>/dev/null
+			/usr/sbin/john
+			/rofs/usr/sbin/john
+
+		-> al hacer cat sobre jhon en cualquier de esos archivos:
+
+					->cdiiddwpgswtgt
+
+
+		si rotamos la contraseña, primero con caesar, rot13... hasta que probando con 11 se cambió a 
+	
+					->nottoohardhere
+
+		level00@SnowCrash:/rofs/usr/sbin$ su flag00
+		Password: 
+		Don't forget to launch getflag !
+		flag00@SnowCrash:~$ getflag nottoohardhere
+		Check flag.Here is your token : x24ti5gi3x0ol2eh4esiuxias
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
