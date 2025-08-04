@@ -1,0 +1,63 @@
+level02:
+
+
+	Al hacer un ls nos sale un archivo .pcap con probablemente cosas en binario.
+
+	es un packet capture :
+
+	"a data file used to store network traffic captured during packet sniffing, 
+	recording raw data packets traveling across a network."
+
+	he decidido pasar un strings para ver simplemente caracteres con:
+
+	strings level02.pcap 
+
+	pero al haber muchos he decidido filtrarlo con pass, token, flag.. y di con:
+
+	strings level02.pcap | grep -i "pass"
+	Password: Nf&Nat
+
+	pasado como contraseña por el su flag01, pero no era.
+
+
+	he pasado a analizar con wireshark el pcap, pero he necesitado traducirlo a hexdump
+	en /tmp por que no tenia permisos en ningun otro lado.
+
+
+		xxd -p level02.pcap > hexdump.txt
+
+	luego ese hexdump.txt lo he redirigido a una copia del packet con:
+
+	xxd -r -p hex.txt > level02.pcap
+
+	y me he asegurado que el archivo es un pcap capture file ya que antes al copiarse
+	algun salto o algo me lo detectaba como un ascii file y ya:
+
+	file level02.pcap 
+	level02.pcap: pcap capture file, microsecond ts (little-endian) - 
+	version 2.4 (Ethernet, capture length 16777216
+
+
+	perfecto, ahora con wireshark analizaremos el paquete entero
+
+	wireshark level02.pcap
+
+
+	he ido analizando hasta que en uno habia la palabra passwd, entonces he decidido
+	seguir el paquete con "follow" y luego "TCP stream" y ahi encontre algo mejor:
+
+
+	..wwwbugs login: l.le.ev.ve.el.lX.X
+	..
+	Password: ft_wandr...NDRel.L0L
+	.
+	..
+	Login incorrect
+	wwwbugs login:
+
+	quitando los 7f y modificando la cadena la contraseña era:
+
+	ft_waNDReL0L
+
+	la flag: kooda2puivaav1idi4f57q8iq
+
