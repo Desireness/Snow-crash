@@ -1,0 +1,50 @@
+
+
+level01:
+
+
+
+		ps aux | grep -level01:
+
+
+		level01@SnowCrash:~$ ps aux | grep :
+
+	level01@SnowCrash:~$ ps aux | grep level01
+	root      1939  0.0  0.6  11360  3384 ?        Ss   14:41   0:00 sshd: level01 [priv]
+	level01   1949  0.0  0.3  11360  1600 ?        R    14:42   0:00 sshd: level01@pts/0 
+	level01   1950  0.0  1.1   9588  5984 pts/0    Ss   14:42   0:00 -bash
+	root      2048  0.0  0.6  11360  3384 ?        Ss   14:42   0:00 sshd: level01 [priv]
+	level01   2052  0.0  0.3  11360  1600 ?        S    14:42   0:00 sshd: level01@pts/1 
+	level01   2053  0.0  1.1   9588  6028 pts/1    Ss+  14:42   0:00 -bash
+	level01   2303  0.0  0.2   4936  1148 pts/0    R+   15:06   0:00 ps aux
+	level01   2304  0.0  0.1   4380   816 pts/0    S+   15:06   0:00 grep --color=auto level01
+
+		por casualidad un cat en cat /etc/passwd:
+
+	level14:x:2014:2014::/home/user/level14:/bin/bash
+	flag00:x:3000:3000::/home/flag/flag00:/bin/bash
+	flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
+	flag02:x:3002:3002::/home/flag/flag02:/bin/bash
+	flag03:x:3003:3003::/home/flag/flag03:/bin/bash
+
+	Bingo, o eso creo, habra que ver si 42hDRfypTqqnw es un hash para ver si al crackear la contraseña es algo
+	relevante o directamente la flag.
+
+	despues de crackearlo directamente me sale :
+
+	john hashlevel01.txt --show
+	?:abcdefg
+
+	1 password hash cracked, 0 left
+
+
+	¡Bingo!:
+
+	su flag01
+
+	Password: 
+	Don't forget to launch getflag !
+	flag01@SnowCrash:~$ getflag
+	Check flag.Here is your token : f2av5il02puano7naaf6adaaf
+
+
