@@ -1,0 +1,71 @@
+level09:
+
+
+	tenemos dos archivos siendo:
+		
+		 level09  token
+
+	level09 es un binario ejecutable, hacemos pruebas:
+
+	level09@SnowCrash:~$ ./level09 
+	You need to provied only one arg.
+	level09@SnowCrash:~$ ./level09 a
+	a
+	level09@SnowCrash:~$ ./level09 abc
+	ace
+	level09@SnowCrash:~$ ./level09 aaaaaaaa
+	abcdefgh
+	level09@SnowCrash:~$ ./level09 token 
+	tpmhr
+	level09@SnowCrash:~$ cat token 
+	f4kmm6p|=�p�n��DB�Du{��
+
+	y sacamos con que el archivo lee el argumento y mueve segun la posicion siendo a = a, ab = ac y asi, esta descifrado el token, toca crear un script en c:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+int main()
+{
+    const char *token_path = "/home/user/level09/token"; // Ruta absoluta al token
+    FILE *file = fopen(token_path, "rb"); // Modo binario para leer bytes crudos
+    
+    if (!file)
+    {
+        fprintf(stderr, "Error: No se pudo abrir el archivo %s\n", token_path);
+        return 1;
+    }
+
+    printf("token descifrada: ");
+    int i = 0;
+    int c;
+    while ((c = fgetc(file)) != EOF)
+	{ // Lee byte a byte
+        	char decrypted = c - i++;
+        	if (isprint(decrypted)) 
+		{     // Filtra caracteres imprimibles
+            	putchar(decrypted);
+        }
+    }
+    fclose(file);
+    printf("\n");
+    return 0;
+}
+
+
+		leemos desde el propio token ya que antes me salia este token:
+
+		4kmm6p|=�p�n��DB�Du{�� al querer copiar eso.
+
+
+	Token descifrado: f3iji1ju5yuevaus41q1afiuq.
+
+	y al pasarlo por el su del nivel nos da la flag:
+
+	level09@SnowCrash:~$ su flag09
+	Password: 
+	Don't forget to launch getflag !
+	flag09@SnowCrash:~$ getflag
+	Check flag.Here is your token : s5cAJpM8ev6XHw998pRWG728z
+
